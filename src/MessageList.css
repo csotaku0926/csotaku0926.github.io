@@ -1,0 +1,11 @@
+.msg_ul {
+    width: 80%;
+}
+
+.msg_row {
+    list-style-type: none;   /* remove bullet */
+    background-color: #8adcf3;
+    margin: 10px;
+    height: 50px;
+    width: 100%;
+}

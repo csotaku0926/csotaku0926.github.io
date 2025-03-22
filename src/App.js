@@ -15,10 +15,17 @@ function App() {
     return (
         <div className="App">
             <header className="App-header">
-                <h1> Message Board </h1>
-                <MessageList messages={messages} />
-                <MessageForm addMessage={addMessage}/>
+                <ul>
+                    <li><a href="/">網路攻防實習</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Chat</a></li>
+                </ul>
             </header>
+
+            <h1> Message Board </h1>
+            <MessageList messages={messages} />
+            <MessageForm addMessage={addMessage}/>
+
         </div>
     );
 
