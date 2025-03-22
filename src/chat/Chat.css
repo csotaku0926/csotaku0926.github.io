@@ -33,8 +33,8 @@ header ul li a {
   color: #fff;
 }
 
-/*hover effect*/
-head ul li a:hover{
+/* hover effect */
+header ul li a:hover{
     background: #fff;
     color : #2b1055;
     border-radius: 30px; /*round border*/

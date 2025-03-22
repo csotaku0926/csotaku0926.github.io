@@ -1,5 +1,6 @@
 .msg_ul {
-    width: 80%;
+    min-height: 40vh;
+    max-width: 90%;
 }
 
 .msg_row {

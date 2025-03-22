@@ -1,35 +1,24 @@
 import React, { useState } from "react";
-import MessageForm from "./MessageForm";
-import MessageList from "./MessageList";
+import {
+    BrowserRouter as Router, Routes,
+    Route
+} from "react-router-dom";
 import './App.css';
+import Chat from "./chat/Chat"
+import Profile from "./Profile"
 
 function App() {
-
-    const [messages, setMessages] = useState([]);
-
-    const addMessage = (newMessage) => {
-        // insert back new message to list
-        setMessages([...messages, newMessage]);
-    }
-
     return (
-        <div className="App">
-            <header className="App-header">
-                <ul>
-                    <li><a href="/">網路攻防實習</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Chat</a></li>
-                </ul>
-            </header>
+            <div className="App">
+                <Router>
+                    <Routes>
+                        <Route path="/" element={<Profile />} />
+                        <Route path="/chat" element={<Chat />} />
+                    </Routes>
+                </Router>
 
-            <h1> Message Board </h1>
-            <MessageList messages={messages} />
-            <MessageForm addMessage={addMessage}/>
-
-        </div>
+            </div>
     );
-
-
 }
 
 export default App;
