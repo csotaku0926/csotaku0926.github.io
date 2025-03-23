@@ -26,11 +26,12 @@ header ul {
 header ul li {
   list-style: none;
   margin: 10px;
+  color: #fff;
 }
 
 header ul li a {
   text-decoration: none; /* remove default underline of a */
-  color: #fff;
+  
 }
 
 /*hover effect*/
