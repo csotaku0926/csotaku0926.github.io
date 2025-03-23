@@ -4,8 +4,8 @@ import {
     Route
 } from "react-router-dom";
 import './App.css';
-import Chat from "./chat/Chat"
-import Profile from "./profile/Profile"
+import Chat from "./Chat"
+import Profile from "./Profile"
 
 function App() {
 
