@@ -1,20 +1,21 @@
+import { useState} from "react";
+import "../App.css";
+// import { useNavigate } from "react-router-dom";
 import services from "../services";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "../App.css"
 
-function Login({ setUser }) {
-    //display content on success or error
+function Register() {
+    // display content on success or error
     const [data, setData] = useState(null);
     const [err, setErr] = useState(null);
-    const navigate = useNavigate();
+    const [RdOnly, setRdOnly] = useState(false);
 
     const [textInput, setTextInput] = useState({
         username: "",
         password: "",
+        avatar: "" // this would be base64 string of image
     });
 
-    const { username, password } = textInput;
+    const { username, password, avatar } = textInput;
 
     /** @type {React.FormEventHandler<HTMLFormElement>} */
     const handleFormSubmit = (event) => {
@@ -25,21 +26,27 @@ function Login({ setUser }) {
             if (username.length >= 25 || password.length >= 25) {
                 throw new Error("username or password too long (>= 25)");
             }
-            
-            services.login.login({ username, password })
+        
+            if (avatar.length && !avatar.startsWith("data:image/")) {
+                throw new Error("Invalid avatar format");
+            }
+
+            if (avatar.length >= 16500) {
+                throw new Error("avatar image too large (>= 12 KB)");
+            }
+
+            services.auth.register({ username, password, avatar })
             .then( (res) => {
                 if (res.status === 400) {
                     throw new Error(res.response);
                 }
                 
-                /** Login success */
                 setData(res.data.message);
                 setErr(null);
-                setUser(res.data.user);
-                navigate("/");
+                setRdOnly(true);
             })
             .catch( (e) => {
-                console.error('error:', e);
+                console.log('error:', e);
                 // there's no method to catch "ERR_blocked_by_client" for now
                 let msg = "error";
                 if (e.code === "ERR_NETWORK")
@@ -56,7 +63,7 @@ function Login({ setUser }) {
             setErr(e.message);
         }
     }
-    
+
     // update textInput state when user key in
     const handleTextInputChange = ({ target: {name, value} }) => {
         // functional update: forcing the update to be synchronous,
@@ -66,15 +73,37 @@ function Login({ setUser }) {
         }));
     };
 
+    /* ref: https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL */
+    const previewImg = () => {
+        const preview = document.querySelector("img");
+        const file = document.querySelector("input[type=file]").files[0];
+        const reader = new FileReader();    
+
+        // listen to "load" event and the callback "receives" notification
+        reader.addEventListener(
+            "load",
+            () => {
+                // convert image to base64 string
+                preview.src = reader.result;
+                setTextInput(prev => ({
+                    ...prev, // reserve other attributes
+                    avatar: reader.result
+                }));
+            },
+            false,
+        );
+        
+        if (file)
+            reader.readAsDataURL(file);
+    }
+
     return (
         <div className="App">
             <header className="App-header">
-                <div> Login </div>
+                <div> Register </div>
             </header>
-            
             <h3>{data ? data : ""}</h3>
             <h3 className="Err">{err ? err : ""}</h3>
-            
             <form onSubmit={handleFormSubmit}>
                 <div className="form_div">
                     <label>
@@ -85,6 +114,7 @@ function Login({ setUser }) {
                             placeholder=""
                             value={username}
                             onChange={handleTextInputChange}
+                            readOnly={RdOnly}
                             required
                         />
                     </label>
@@ -96,17 +126,29 @@ function Login({ setUser }) {
                             placeholder=""
                             value={password}
                             onChange={handleTextInputChange}
+                            readOnly={RdOnly}
                             required
                         />
                     </label>
+                    <label>
+                        <span>Avatar Image</span>
+                        <input 
+                            type="file"
+                            name="avatar"
+                            accept="image/png, image/jpeg"
+                            readOnly={RdOnly}
+                            onChange={previewImg}
+                        />
+                        <img src="/" alt="your avatar" className="avatar_img"/>
+                    </label>
                 </div>
                 <button type="submit">
-                    Login
+                    Register
                 </button>
             </form>
-
+            
         </div>
     );
 }
 
-export default Login;
+export default Register;

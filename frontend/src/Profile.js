@@ -1,5 +1,5 @@
 import React from "react";
-import avator from "./avator.jpg"
+import avator from "./img/avator.jpg"
 import "./profile.css"
 
 const Profile = () => {

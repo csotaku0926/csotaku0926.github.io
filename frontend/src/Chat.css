@@ -1,8 +1,8 @@
-.App {
+.App_chat {
   text-align: center;
   background-color: #5e6779;
   color: white;
-  min-height: 100vh;
+  max-height: 0vh;
   display: flex;
   flex-direction: column;
 }
@@ -35,7 +35,11 @@ header ul li a {
 
 /* hover effect */
 header ul li a:hover{
-    background: #fff;
-    color : #2b1055;
-    border-radius: 30px; /*round border*/
+  background: #fff;
+  color : #2b1055;
+  border-radius: 30px; /*round border*/
+}
+
+.Err {
+  color: red;
 }

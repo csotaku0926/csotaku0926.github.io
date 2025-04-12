@@ -5,12 +5,17 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .App-header {
   background-color: #282c34;
-  min-height: 10vh;
+  max-height: 20vh;
   font-size: calc(10px + 2vmin);
+}
+
+.Err {
+  color:red;
 }
 
 header {
@@ -35,8 +40,14 @@ header ul li a {
 }
 
 /*hover effect*/
-head ul li a:hover{
+head ul li:hover{
     background: #fff;
     color : #2b1055;
     border-radius: 30px; /*round border*/
+}
+
+.form_div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
