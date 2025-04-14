@@ -4,8 +4,10 @@ import { makeLogin } from "./login";
 import { makeAPI } from "./api";
 import { makeMsg } from "./chat";
 
+axios.defaults.withCredentials = true;
+
 const api = axios.create({
-    baseURL: "http://localhost:8000/", //backend server URL
+    baseURL: "https://5be8-140-112-194-228.ngrok-free.app", //"http://localhost:8000/", //backend server URL
     withCredentials: true, // enable sending cookies
 })
 

@@ -11,6 +11,9 @@ export const makeLogin = (db) => ({
     
         const { username, password } = req.body;
     
+        if (username.length >= 25 || password.length >= 25) 
+            return res.status(400).send("username or password too long (>= 25)");
+
         // assign id as sha-256 hash of username
         const _id = createHash("md5").update(username).digest("base64");
         // make hash of username and pswd

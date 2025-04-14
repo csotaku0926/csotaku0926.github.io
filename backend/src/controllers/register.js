@@ -10,6 +10,18 @@ export const makeResiter = (db) => ({
         
         const { username, password, avatar } = req.body;
     
+        // checking inputs are valid or not
+        if (username.length >= 25 || password.length >= 25) 
+            return res.status(400).send("username or password too long (>= 25)");
+    
+        if (avatar.length && !avatar.startsWith("data:image/"))
+            return res.status(400).send("Invalid avatar format");
+        
+
+        if (avatar.length >= 16500)
+            return res.status(400).send("avatar image too large (>= 12 KB)");
+        
+
         console.log("avatar len:", avatar.length)
         
         // assign id as sha-256 hash of username

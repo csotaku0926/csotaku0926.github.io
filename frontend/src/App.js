@@ -15,7 +15,20 @@ function App() {
 
     const [n_visitor, set_n_visitor] = useState(0);
     const [user, setUser] = useState(null);
+    const [err, setErr] = useState("");
     
+    const ErrHandler = (e, e_name) => {
+        console.error(e_name, e);
+        // there's no method to catch "ERR_blocked_by_client" for now
+        let msg = "error";
+        if (e.code === "ERR_NETWORK")
+            msg = e.message + " (Consider disable your ad-blocker)";
+        else if (e.code === "ERR_BAD_REQUEST")
+            msg = e.response.data;
+
+        setErr(msg);
+    };
+
     const checkLoginHandler = () => {
         /** check if user login */
         services.login.check_login()
@@ -26,7 +39,8 @@ function App() {
                 setUser(null);
                 sessionStorage.removeItem("avatar");
             }
-        });
+        })
+        .catch((e) => ErrHandler(e, 'check login:'));
     };
 
     useEffect(() => {
@@ -36,11 +50,13 @@ function App() {
         sessionStorage.setItem("n_visitor", initialCount + 1);
 
         checkLoginHandler();
+        setErr("");
 
-    }, [user]);
+    }, []);
 
     const onLogoutHandler = () => {
         services.login.logout();
+        sessionStorage.removeItem("avatar");
         setUser(null);
     }
 
@@ -72,9 +88,7 @@ function App() {
 
             sessionStorage.setItem("avatar", res.data.avatar);
             avatar_img.src = res.data.avatar;
-        }).catch((err) => {
-            console.error(err);
-        })
+        }).catch((e) => ErrHandler(e, 'get_avatar:'));
     }
 
     return (
@@ -104,6 +118,7 @@ function App() {
                                 <li><Link to="/login">Login</Link></li>
                             </ul>
                     )}
+                    {err.length ? (<h3 className="Err">err</h3>) : ""}
 
                 </header>
 

@@ -16,6 +16,18 @@ function Chat() {
     const fetchedUsernames = useRef(new Set());
     const fetchedMsgUpdated = useRef(false);
 
+    const ErrHandler = (e, e_name) => {
+        console.error(e_name, e);
+        // there's no method to catch "ERR_blocked_by_client" for now
+        let msg = "error";
+        if (e.code === "ERR_NETWORK")
+            msg = e.message + " (Consider disable your ad-blocker)";
+        else if (e.code === "ERR_BAD_REQUEST")
+            msg = e.response.data;
+
+        setErr(msg);
+    };
+
     const checkLoginHandler = () => {
         /** check if user login */
         services.login.check_login()
@@ -23,10 +35,11 @@ function Chat() {
             if (res.data.loggedIn)
                 setUser(res.data.user);
             else {
-                setErr("You need to log in to chat");
+                setErr("You are not logged in");
                 setUser(null);
             }
-        });
+        })
+        .catch((e) => ErrHandler(e, 'check login:'));
     }
     
     useEffect(() => {
@@ -68,11 +81,20 @@ function Chat() {
                         [username]: set_img 
                     }));
         
-                }).catch((err) => {console.error(err)});
+                }).catch((err) => {
+                    console.error("get_all_msg:", err);
+                    setErr(err.response.data.message);
+                });
             })
 
         })
-        .catch( e => console.error(e) );
+        .catch( e => {
+            console.error("get_all_msg:", e);
+            let msg = e.message;
+            if (e.code === "ERR_NETWORK")
+                msg = e.message + " (Consider disable your ad-blocker)";
+            setErr(msg);
+        } );
 
     }, [messages, doUpdate]);
 
@@ -113,8 +135,15 @@ function Chat() {
             fetchedMsgUpdated.current = false;
 
         }).catch((e) => {
-            // console.error("delMessage error:", e);
-            setErr(e.response.data);
+            console.error('delerror:', e);
+            // there's no method to catch "ERR_blocked_by_client" for now
+            let msg = "error";
+            if (e.code === "ERR_NETWORK")
+                msg = e.message + " (Consider disable your ad-blocker)";
+            else if (e.code === "ERR_BAD_REQUEST")
+                msg = e.response.data;
+
+            setErr(msg);
         });
     }
 
