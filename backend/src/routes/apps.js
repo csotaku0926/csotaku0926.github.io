@@ -9,6 +9,7 @@ const router = Router();
 
 router.post("/post_msg", jsonParser, appsServices.post_message.post_message);
 router.post("/del_msg", jsonParser, appsServices.delete_message.delete_message);
+router.post("/ai_gen", jsonParser, appsServices.AI_gen);
 router.get("/get_all_msg", appsServices.get_all_msg.getAllMsg);
 
 export default router;

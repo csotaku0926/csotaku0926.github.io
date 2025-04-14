@@ -6,17 +6,18 @@ import session from "express-session";
 import authRoutes from "./routes/auth.js";
 import appRoutes from "./routes/apps.js";
 
+import { URLConfig } from "../config/url.js";
+
 const app = express();
 const port = process.env.PORT || 8000;
 
 /** This allows cookies and credentials for this origin under CORS policy */
 const corsOption = {
-    origin: [
-        "https://61a7-140-112-194-228.ngrok-free.app"
-    ],
+    origin: URLConfig.frontend, //"https://61a7-140-112-194-228.ngrok-free.app",
     credentials: true,
 }
 app.use(cors(corsOption));
+
 
 /** session settings */
 // ref: https://stackoverflow.com/questions/75402568/session-cookie-not-saving-after-app-deployment

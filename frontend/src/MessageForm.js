@@ -25,7 +25,6 @@ function MessageForm({ addMessage }) {
                 onChange={(e) => setText(e.target.value)}
             />
             <button type="submit">Submit</button>
-            <div>current text: {text}</div>
         </form>
     );
 }

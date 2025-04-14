@@ -8,6 +8,7 @@ import Profile from "./Profile"
 import Register from "./components/Register";
 import Login from "./components/Login";
 import services from "./services";
+import AI_gen from "./components/AI_gen";
 // default avatar
 import df_avatar from "./img/logo192.png";
 
@@ -108,6 +109,9 @@ function App() {
                                 <li>
                                     <Link to="/">Welcome, {user}</Link>
                                 </li>
+                                <li>
+                                    <Link to="/ai_gen">AI talk</Link>
+                                </li>
                                 <li onClick={onLogoutHandler}>
                                     <Link to="/">Logout</Link>
                                 </li>
@@ -127,6 +131,7 @@ function App() {
                         <Route path="/chat" element={<Chat />} />
                         <Route path="/register" element={<Register />}/>
                         <Route path="/login" element={<Login setUser={setUser}/>}/>
+                        <Route path="/ai_gen" element={<AI_gen/>}/>
                     </Routes>
             </Router>
         </div>

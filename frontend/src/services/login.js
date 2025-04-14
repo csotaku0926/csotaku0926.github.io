@@ -5,7 +5,7 @@ export const makeLogin = (instance) => ({
     },
 
     check_login() {
-        return instance.get("/api/check_login");
+        return instance.get("/api/check_login", {"ngrok-skip-browser-warning": "any"});
     },
 
     logout() {

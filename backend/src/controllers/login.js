@@ -40,6 +40,7 @@ export const makeLogin = (db) => ({
             // put username into session store
             req.session.user = username;
             req.session.h_user = _id;
+            req.session.ai_usage = 3;
             console.log("user session:", req.session);
             console.log("user session ID:", req.sessionID);
             
